@@ -5,7 +5,8 @@ const ForbiddenError = require('../errors/forbidden-err');
 const { notFoundId, forbiddenError, success } = require('../utils/const');
 
 module.exports.getArticles = (req, res, next) => {
-  Article.find(req.user._id)
+  const owner = req.user._id;
+  Article.find({ owner })
     .then((articles) => res.send(articles))
     .catch((err) => next(new BadRequestError(err)));
 };
@@ -26,7 +27,7 @@ module.exports.deleteArticle = (req, res, next) => {
     .orFail(() => new NotFoundError(notFoundId))
     .then((article) => {
       if (String(article.owner) !== owner) throw new ForbiddenError(forbiddenError);
-      return Article.findByIdAndDelete(article._id);
+      return Article.deleteOne(article);
     })
     .then(() => res.send({ message: success }))
     .catch(next);

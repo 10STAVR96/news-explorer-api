@@ -5,7 +5,7 @@ const NotFoundError = require('../errors/not-found-err');
 const ConflictDataError = require('../errors/conflict-data-err');
 const LoginError = require('../errors/login-err');
 const { jwtDefault } = require('../utils/config');
-const { notFoundUser } = require('../utils/const');
+const { notFoundUser, suchEmailExists } = require('../utils/const');
 
 const { NODE_ENV, JWT_SECRET = 'dev-key' } = process.env;
 
@@ -29,7 +29,7 @@ module.exports.createUser = (req, res, next) => {
       email, password: hash, name,
     }))
     .then((user) => res.status(201).send({ _id: user._id, email }))
-    .catch((err) => next(new ConflictDataError(err)));
+    .catch(() => next(new ConflictDataError(suchEmailExists)));
 };
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
