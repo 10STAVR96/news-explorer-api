@@ -7,7 +7,7 @@ const LoginError = require('../errors/login-err');
 const { jwtDefault } = require('../utils/config');
 const { notFoundUser, suchEmailExists } = require('../utils/const');
 
-const { NODE_ENV, JWT_SECRET = 'dev-key' } = process.env;
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.getUserInfo = (req, res, next) => {
   User.findById(req.user._id)
