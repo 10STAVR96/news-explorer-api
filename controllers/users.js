@@ -14,6 +14,7 @@ module.exports.getUserInfo = (req, res, next) => {
     .then((user) => {
       if (!user) throw new NotFoundError(notFoundUser);
       res.send({
+        id: user._id,
         email: user.email,
         name: user.name,
       });
