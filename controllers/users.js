@@ -12,8 +12,10 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 module.exports.getUserInfo = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
+      console.log(user);
       if (!user) throw new NotFoundError(notFoundUser);
       res.send({
+        id: user._id,
         email: user.email,
         name: user.name,
       });
